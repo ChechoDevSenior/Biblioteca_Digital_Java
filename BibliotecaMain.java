@@ -84,19 +84,18 @@ public class BibliotecaMain {
         String isbn = sc.nextLine();
         System.out.println("Ingrese el título del libro: ");
         String titulo = sc.nextLine();
-        System.out.println("Ingrese el año de publicación del libro: ");
-        int anio = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Ingrese la editorial del libro: ");
-        String editorial = sc.nextLine();
         System.out.println("Ingrese el autor del libro: ");
         String autor = sc.nextLine();
-
-        // Se agrega el libro a la lista
+        System.out.println("Ingrese el año de publicación del libro: ");
+        int anio = sc.nextInt();
+        sc.nextLine(); // Limpiar buffer
+        System.out.println("Ingrese la editorial del libro: ");
+        String editorial = sc.nextLine();
+    
         libros.add(new Libro(isbn, titulo, anio, editorial, autor));
-        System.out.println();
-        System.out.println("Libro registrado con exito.");
+        System.out.println("Libro registrado con éxito.");
     }
+    
 
     // Método para registrar un nuevo usuario
     static void registrarUsuario() {
@@ -119,62 +118,73 @@ public class BibliotecaMain {
     // Método para prestar un libro a un usuario registrado
     static void prestarLibro() {
         System.out.println();
-        System.out.println("Ingrese el nombre del libro: ");
-        String titulo = sc.nextLine();
+        System.out.println("Ingrese el ISBN del libro: ");
+        String isbn = sc.nextLine();
         Libro libroPrestado = null;
-
-        // Se busca el libro en la lista
+    
         for (Libro l : libros) {
-            if (l.titulo.equalsIgnoreCase(titulo)) {
+            if (l.isbn.equalsIgnoreCase(isbn)) {
                 libroPrestado = l;
                 break;
             }
         }
-
+    
         if (libroPrestado == null) {
-            System.out.println("Libro no encontrado, verifique la consulta.");
+            System.out.println("Libro no encontrado, verifique el ISBN.");
             return;
         }
-
-        System.out.println("Ingrese el ID responsable del prestamo: ");
+    
+        System.out.println("Ingrese el ID del usuario que solicita el préstamo: ");
         int idUsuario = sc.nextInt();
+        sc.nextLine();
+    
         Usuario usuarioEncontrado = null;
-
-        // Se busca el usuario en la lista
         for (Usuario u : usuarios) {
             if (u.id == idUsuario) {
                 usuarioEncontrado = u;
                 break;
             }
         }
-
+    
         if (usuarioEncontrado == null) {
-            System.out.println(
-                    "Usuario no encontrado. Verifique primero el ID de los usuarios registrados para solicitar un prestamo.");
+            System.out.println("Usuario no encontrado. Verifique el ID.");
             return;
         }
-
-        // Se registra el préstamo y se elimina el libro de los disponibles
+    
         prestamos.add(new Prestamo(libroPrestado, usuarioEncontrado));
         libros.remove(libroPrestado);
         System.out.println("Libro prestado correctamente.");
-    }
+    }   
 
     // Método para devolver un libro
     static void devolverLibro() {
         System.out.println();
         if (prestamos.isEmpty()) {
-            System.out.println("No hay prestamos vigentes.");
+            System.out.println("No hay préstamos vigentes.");
             return;
         }
-
-        // Se toma el primer préstamo y se registra en la pila de devoluciones
-        Prestamo p = ((LinkedList<Prestamo>) prestamos).poll();
-        libros.add(p.libro); // Se regresa el libro al catálogo
-        devoluciones.push(p); // Se guarda el préstamo como devolución
-        System.out.println("Libro devuelto con exito.");
+    
+        System.out.println("Ingrese el ISBN del libro a devolver: ");
+        String isbn = sc.nextLine();
+    
+        Prestamo prestamoDevuelto = null;
+        for (Prestamo p : prestamos) {
+            if (p.libro.isbn.equalsIgnoreCase(isbn)) {
+                prestamoDevuelto = p;
+                break;
+            }
+        }
+        if (prestamoDevuelto == null) {
+            System.out.println("No se encontró préstamo activo para ese ISBN.");
+            return;
+        }
+    
+        libros.add(prestamoDevuelto.libro);
+        devoluciones.push(prestamoDevuelto);
+        prestamos.remove(prestamoDevuelto);
+        System.out.println("Libro devuelto con éxito.");
     }
-
+    
     // Método para mostrar los libros disponibles actualmente
     static void mostrarLibros() {
         System.out.println();
