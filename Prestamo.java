@@ -1,19 +1,23 @@
 // Clase que representa un préstamo de un libro a un usuario
-public class Prestamo {
-    // Atributos del préstamo
-    Libro libro;         // Objeto del libro prestado
-    Usuario usuario;     // Usuario al que se le prestó el libro
+import java.util.Date;
 
-    // Constructor que inicializa el préstamo con el libro y el usuario involucrado
-    public Prestamo(Libro libro, Usuario usuario) {
-        this.libro = libro;
+public class Prestamo {
+    int id;
+    Usuario usuario;
+    Libro libro;
+    Date fechaPrestamo;
+
+    // Constructor
+    public Prestamo(int id, Usuario usuario, Libro libro) {
+        this.id = id;
         this.usuario = usuario;
+        this.libro = libro;
+        this.fechaPrestamo = new Date(); // Fecha actual del préstamo
     }
 
-    // Método sobrescrito para mostrar una descripción del préstamo
+    // Método para mostrar la información del préstamo
     @Override
     public String toString() {
-        // Ejemplo de salida: El libro 'Cien años de soledad' fue prestado a Gabriel García
-        return "El libro '" + libro.titulo + "' fue prestado a " + usuario.nombre;
+        return "ID: " + id + ", Usuario: " + usuario.getNombre() + ", Libro: " + libro.getTitulo() + ", Fecha de Préstamo: " + fechaPrestamo;
     }
 }

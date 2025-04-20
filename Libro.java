@@ -1,25 +1,53 @@
 // Clase que representa un libro en la biblioteca
 public class Libro {
-    // Atributos del libro
-    String isbn;         // Código ISBN del libro (identificador único)
-    String titulo;       // Título del libro
-    int anio;            // Año de publicación
-    String editorial;    // Editorial del libro
-    String autor;        // Autor del libro
+    // Atributos privados que definen las propiedades del libro
+    private String isbn; // Código único del libro (clave primaria para búsqueda en árbol)
+    private String titulo; // Título del libro
+    private String autor; // Autor del libro
+    private String editorial; // Editorial del libro
+    private boolean disponible; // Indica si el libro está disponible para préstamo
 
-    // Constructor para inicializar un objeto Libro con sus datos
-    public Libro(String isbn, String titulo, int anio, String editorial, String autor) {
+    // Constructor: se utiliza para crear una nueva instancia de Libro con sus datos
+    public Libro(String isbn, String titulo, String autor, String editorial) {
         this.isbn = isbn;
         this.titulo = titulo;
-        this.anio = anio;
-        this.editorial = editorial;
         this.autor = autor;
+        this.editorial = editorial;
+        this.disponible = true; // Al momento de crearse, el libro está disponible por defecto
     }
 
-    // Método sobrescrito que devuelve una representación en texto del libro
+    // Métodos "getter" para obtener información de los atributos (acceso
+    // controlado)
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public String getEditorial() {
+        return editorial;
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    // Método "setter" para modificar el estado de disponibilidad del libro
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    // Método que devuelve una representación legible del libro (útil para mostrar
+    // en consola)
     @Override
-    public String toString(){
-        // Ejemplo de salida: [1234567890] El Quijote - Miguel de Cervantes (1605)
-        return "[" + isbn + "] " + titulo + " - " + autor + " (" + anio + ")";
+    public String toString() {
+        return "ISBN: " + isbn + ", Título: " + titulo + ", Autor: " + autor +
+                ", Editorial: " + editorial + ", Disponible: " + (disponible ? "Sí" : "No");
     }
 }

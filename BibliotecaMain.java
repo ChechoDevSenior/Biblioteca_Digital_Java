@@ -1,3 +1,4 @@
+
 //Sergio Arturo Peña Chaparro 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,6 +22,11 @@ public class BibliotecaMain {
 
     // Pila de devoluciones realizadas
     static Stack<Prestamo> devoluciones = new Stack<>();
+
+    // Instancia de los árboles
+    static ArbolLibros arbolLibros = new ArbolLibros();
+    static ArbolUsuarios arbolUsuarios = new ArbolUsuarios();
+    static ArbolPrestamo arbolPrestamos = new ArbolPrestamo();
 
     public static void main(String[] args) {
         int opcion = 0;
@@ -50,7 +56,7 @@ public class BibliotecaMain {
                     registrarUsuario(); // Agrega un nuevo usuario
                     break;
                 case 3:
-                    prestarLibro(); // Presta un libro a un usuario
+                    solicitarPrestamo(); // Presta un libro a un usuario
                     break;
                 case 4:
                     devolverLibro(); // Devuelve el libro prestado
@@ -80,135 +86,92 @@ public class BibliotecaMain {
 
     // Método para registrar un nuevo libro
     static void registrarLibro() {
-        System.out.println("Ingrese ISBN: ");
+        System.out.println(" ");
+        // Solicita al usuario ingresar los datos del libro
+        System.out.print("Ingrese ISBN: ");
         String isbn = sc.nextLine();
-        System.out.println("Ingrese el título del libro: ");
+        System.out.print("Ingrese el título del libro: ");
         String titulo = sc.nextLine();
-        System.out.println("Ingrese el autor del libro: ");
+        System.out.print("Ingrese el autor del libro: ");
         String autor = sc.nextLine();
-        System.out.println("Ingrese el año de publicación del libro: ");
-        int anio = sc.nextInt();
-        sc.nextLine(); // Limpiar buffer
-        System.out.println("Ingrese la editorial del libro: ");
+        System.out.print("Ingrese la editorial del libro: ");
         String editorial = sc.nextLine();
-    
-        libros.add(new Libro(isbn, titulo, anio, editorial, autor));
+        Libro nuevoLibro = new Libro(isbn, titulo, autor, editorial);
+        arbolLibros.insertar(nuevoLibro);
         System.out.println("Libro registrado con éxito.");
     }
-    
 
     // Método para registrar un nuevo usuario
     static void registrarUsuario() {
-        System.out.println();
-        System.out.println("ID: ");
+        System.out.println("Ingrese ID del usuario: ");
         int id = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Nombre: ");
+        sc.nextLine(); // Limpiar buffer
+        System.out.println("Ingrese nombre del usuario: ");
         String nombre = sc.nextLine();
-        System.out.println("Correo electrónico: ");
-        String email = sc.nextLine();
-        System.out.println("Teléfono: ");
+        System.out.println("Ingrese dirección del usuario: ");
+        String direccion = sc.nextLine();
+        System.out.println("Ingrese teléfono del usuario: ");
         String telefono = sc.nextLine();
 
-        // Se agrega el usuario a la lista
-        usuarios.add(new Usuario(id, nombre, email, telefono));
-        System.out.println("Usuario registrado con exito.");
+        Usuario nuevoUsuario = new Usuario(id, nombre, direccion, telefono);
+        arbolUsuarios.insertar(nuevoUsuario);
+        System.out.println("Usuario registrado con éxito.");
     }
 
-    // Método para prestar un libro a un usuario registrado
-    static void prestarLibro() {
+    // Método para registrar un nuevo préstamo
+    static void solicitarPrestamo() {
         System.out.println();
-        System.out.println("Ingrese el ISBN del libro: ");
-        String isbn = sc.nextLine();
-        Libro libroPrestado = null;
-    
-        for (Libro l : libros) {
-            if (l.isbn.equalsIgnoreCase(isbn)) {
-                libroPrestado = l;
-                break;
+        System.out.println("Ingrese ID del usuario que solicita el préstamo: ");
+        int usuarioId = sc.nextInt();
+        Usuario usuario = arbolUsuarios.buscar(usuarioId);
+
+        if (usuario != null) {
+            System.out.println("Ingrese ISBN del libro a solicitar: ");
+            String isbn = sc.next();
+            Libro libro = arbolLibros.buscar(isbn);
+
+            if (libro != null && libro.isDisponible()) {
+                int prestamoId = generarIdPrestamo(); // Método para generar un ID único
+                Prestamo prestamo = new Prestamo(prestamoId, usuario, libro);
+                arbolPrestamos.insertar(prestamo);
+                libro.setDisponible(false); // Marcar libro como no disponible
+                System.out.println("Préstamo registrado con éxito.");
+            } else {
+                System.out.println("El libro no está disponible.");
             }
+        } else {
+            System.out.println("Usuario no encontrado.");
         }
-    
-        if (libroPrestado == null) {
-            System.out.println("Libro no encontrado, verifique el ISBN.");
-            return;
-        }
-    
-        System.out.println("Ingrese el ID del usuario que solicita el préstamo: ");
-        int idUsuario = sc.nextInt();
-        sc.nextLine();
-    
-        Usuario usuarioEncontrado = null;
-        for (Usuario u : usuarios) {
-            if (u.id == idUsuario) {
-                usuarioEncontrado = u;
-                break;
-            }
-        }
-    
-        if (usuarioEncontrado == null) {
-            System.out.println("Usuario no encontrado. Verifique el ID.");
-            return;
-        }
-    
-        prestamos.add(new Prestamo(libroPrestado, usuarioEncontrado));
-        libros.remove(libroPrestado);
-        System.out.println("Libro prestado correctamente.");
-    }   
+    }
 
     // Método para devolver un libro
     static void devolverLibro() {
         System.out.println();
-        if (prestamos.isEmpty()) {
-            System.out.println("No hay préstamos vigentes.");
-            return;
+        System.out.println("Ingrese el ID del préstamo a devolver: ");
+        int prestamoId = sc.nextInt();
+        Prestamo prestamo = arbolPrestamos.buscar(prestamoId);
+
+        if (prestamo != null) {
+            prestamo.libro.setDisponible(true); // Marcar el libro como disponible
+            arbolPrestamos.eliminar(prestamoId); // Eliminar el préstamo del árbol
+            System.out.println("Libro devuelto correctamente.");
+        } else {
+            System.out.println("Préstamo no encontrado.");
         }
-    
-        System.out.println("Ingrese el ISBN del libro a devolver: ");
-        String isbn = sc.nextLine();
-    
-        Prestamo prestamoDevuelto = null;
-        for (Prestamo p : prestamos) {
-            if (p.libro.isbn.equalsIgnoreCase(isbn)) {
-                prestamoDevuelto = p;
-                break;
-            }
-        }
-        if (prestamoDevuelto == null) {
-            System.out.println("No se encontró préstamo activo para ese ISBN.");
-            return;
-        }
-    
-        libros.add(prestamoDevuelto.libro);
-        devoluciones.push(prestamoDevuelto);
-        prestamos.remove(prestamoDevuelto);
-        System.out.println("Libro devuelto con éxito.");
     }
-    
+
     // Método para mostrar los libros disponibles actualmente
     static void mostrarLibros() {
         System.out.println();
-        System.out.println("Los libros que actualmente tenemos son los siguientes: ");
-        if (libros.isEmpty()) {
-            System.out.println("No hay libros disponibles en este momento.");
-        } else {
-            for (Libro l : libros) {
-                System.out.println(l);
-            }
-        }
+        System.out.println("Libros disponibles:");
+        arbolLibros.mostrarLibrosInOrden();
+
     }
 
     // Método para mostrar todos los usuarios registrados
     static void mostrarUsuarios() {
-        System.out.println();
-        System.out.println("Los usuarios actualmente registrados son: ");
-        if (usuarios.isEmpty()) {
-            System.out.println("No hay usuarios registrados.");
-        } else {
-            for (Usuario u : usuarios) {
-                System.out.println(u);
-            }
-        }
+        System.out.println("Usuarios registrados:");
+        arbolUsuarios.mostrarUsuariosInOrden();
     }
 
     // Método para mostrar el historial de devoluciones
@@ -218,7 +181,7 @@ public class BibliotecaMain {
             System.out.println("No hay devoluciones registradas.");
         } else {
             for (Prestamo p : devoluciones) {
-                System.out.println("El Libro " + p.libro.titulo + " ha sido devuelto por " + p.usuario.nombre);
+                System.out.println("El Libro " + p.libro.getTitulo() + " ha sido devuelto por " + p.usuario.nombre);
             }
         }
     }
@@ -231,9 +194,15 @@ public class BibliotecaMain {
             return;
         } else {
             for (Prestamo p : prestamos) {
-                System.out.println("El libro " + p.libro.titulo + " está prestado a: " + p.usuario.nombre);
+                System.out.println("El libro " + p.libro.getTitulo() + " está prestado a: " + p.usuario.nombre);
             }
         }
+    }
+
+    // Método para generar un ID único para los préstamos
+    static int generarIdPrestamo() {
+        // Aquí se podría implementar un método para generar IDs únicos
+        return (int) (Math.random() * 10000);
     }
 
     // Método para cerrar el programa
