@@ -121,4 +121,8 @@ public class ArbolUsuarios {
         }
     }
 
+    public boolean estaVacio(){
+        return raiz == null;
+    }
+
 }

@@ -115,4 +115,8 @@ public class ArbolLibros {
         }
     }
 
+    public boolean estaVacio(){
+        return raiz == null;
+    }
+
 }

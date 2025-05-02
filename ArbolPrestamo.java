@@ -1,6 +1,6 @@
 // Clase que representa el Árbol de Búsqueda Binario (BST) para los préstamos
 public class ArbolPrestamo {
-    private NodoPrestamo raiz;
+    NodoPrestamo raiz;
 
     // Constructor
     public ArbolPrestamo() {
@@ -20,7 +20,8 @@ public class ArbolPrestamo {
             return raiz;
         }
 
-        // Si el ID del préstamo es menor que el del nodo actual, va al subárbol izquierdo
+        // Si el ID del préstamo es menor que el del nodo actual, va al subárbol
+        // izquierdo
         if (prestamo.id < raiz.prestamo.id) {
             raiz.izquierdo = insertarRec(raiz.izquierdo, prestamo);
         }
@@ -33,6 +34,10 @@ public class ArbolPrestamo {
         return raiz;
     }
 
+    public NodoPrestamo getRaiz() {
+        return raiz;
+    }
+
     // Método para buscar un préstamo por ID
     public Prestamo buscar(int id) {
         NodoPrestamo resultado = buscarRec(raiz, id);
@@ -41,7 +46,8 @@ public class ArbolPrestamo {
 
     // Método recursivo para buscar un préstamo por ID
     private NodoPrestamo buscarRec(NodoPrestamo raiz, int id) {
-        // Si el árbol está vacío o el ID es igual al del nodo actual, retornamos el nodo
+        // Si el árbol está vacío o el ID es igual al del nodo actual, retornamos el
+        // nodo
         if (raiz == null || raiz.prestamo.id == id) {
             return raiz;
         }
@@ -67,11 +73,13 @@ public class ArbolPrestamo {
             return raiz;
         }
 
-        // Si el ID a eliminar es menor que el del nodo actual, buscamos en el subárbol izquierdo
+        // Si el ID a eliminar es menor que el del nodo actual, buscamos en el subárbol
+        // izquierdo
         if (id < raiz.prestamo.id) {
             raiz.izquierdo = eliminarRec(raiz.izquierdo, id);
         }
-        // Si el ID a eliminar es mayor que el del nodo actual, buscamos en el subárbol derecho
+        // Si el ID a eliminar es mayor que el del nodo actual, buscamos en el subárbol
+        // derecho
         else if (id > raiz.prestamo.id) {
             raiz.derecho = eliminarRec(raiz.derecho, id);
         }
@@ -84,7 +92,8 @@ public class ArbolPrestamo {
                 return raiz.izquierdo;
             }
 
-            // Nodo con dos hijos: Obtener el sucesor (el préstamo con el ID más pequeño en el subárbol derecho)
+            // Nodo con dos hijos: Obtener el sucesor (el préstamo con el ID más pequeño en
+            // el subárbol derecho)
             raiz.prestamo = obtenerMin(raiz.derecho);
 
             // Eliminar el sucesor
@@ -115,4 +124,30 @@ public class ArbolPrestamo {
             mostrarInOrdenRec(raiz.derecho);
         }
     }
+
+    public boolean estaVacio() {
+        return raiz == null;
+    }
+
+    // Método para buscar por ISBN del libro
+
+    public Prestamo buscarPorIsbn(String isbn) {
+        return buscarPorIsbnRec(raiz, isbn);
+    }
+
+    private Prestamo buscarPorIsbnRec(NodoPrestamo nodo, String isbn) {
+        if (nodo == null)
+            return null;
+
+        Prestamo encontradoIzq = buscarPorIsbnRec(nodo.izquierdo, isbn);
+        if (encontradoIzq != null)
+            return encontradoIzq;
+
+        if (nodo.prestamo.libro.getIsbn().equals(isbn)) {
+            return nodo.prestamo;
+        }
+
+        return buscarPorIsbnRec(nodo.derecho, isbn);
+    }
+
 }

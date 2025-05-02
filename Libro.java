@@ -4,15 +4,15 @@ public class Libro {
     private String isbn; // Código único del libro (clave primaria para búsqueda en árbol)
     private String titulo; // Título del libro
     private String autor; // Autor del libro
-    private String editorial; // Editorial del libro
+    private int anioPublicacion; // Año de publicación del libro
     private boolean disponible; // Indica si el libro está disponible para préstamo
 
     // Constructor: se utiliza para crear una nueva instancia de Libro con sus datos
-    public Libro(String isbn, String titulo, String autor, String editorial) {
+    public Libro(String isbn, String titulo, String autor, int anioPublicacion) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
-        this.editorial = editorial;
+        this.anioPublicacion = anioPublicacion;
         this.disponible = true; // Al momento de crearse, el libro está disponible por defecto
     }
 
@@ -30,8 +30,8 @@ public class Libro {
         return autor;
     }
 
-    public String getEditorial() {
-        return editorial;
+    public int getAnioPublicacion() {
+        return anioPublicacion;
     }
 
     public boolean isDisponible() {
@@ -47,7 +47,7 @@ public class Libro {
     // en consola)
     @Override
     public String toString() {
-        return "ISBN: " + isbn + ", Título: " + titulo + ", Autor: " + autor +
-                ", Editorial: " + editorial + ", Disponible: " + (disponible ? "Sí" : "No");
+        return "ISBN: [" + isbn + "], Título: " + titulo + ", Autor: " + autor +
+                ", Año de Publicación: [" + anioPublicacion + "], Disponible: " + (disponible ? "Sí" : "No");
     }
 }
