@@ -1,0 +1,5 @@
+9780140449136,La Odisea,Homero,1998
+9788420674179,Don Quijote de la Mancha,Miguel de Cervantes,1605
+9780307476463,Cien años de soledad,Gabriel García Márquez,1967
+9780061120084,Matar a un ruiseñor,Harper Lee,1960
+9788437604947,La casa de Bernarda Alba,Federico García Lorca,1936
