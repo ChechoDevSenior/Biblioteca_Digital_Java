@@ -9,44 +9,46 @@ public class Libro {
 
     // Constructor: se utiliza para crear una nueva instancia de Libro con sus datos
     public Libro(String isbn, String titulo, String autor, int anioPublicacion) {
-        this.isbn = isbn;
-        this.titulo = titulo;
-        this.autor = autor;
-        this.anioPublicacion = anioPublicacion;
+        this.isbn = isbn; // Asigna el ISBN del libro
+        this.titulo = titulo; // Asigna el título del libro
+        this.autor = autor; // Asigna el autor del libro
+        this.anioPublicacion = anioPublicacion; // Asigna el año de publicación del libro
         this.disponible = true; // Al momento de crearse, el libro está disponible por defecto
     }
 
     // Métodos "getter" para obtener información de los atributos (acceso
     // controlado)
     public String getIsbn() {
-        return isbn;
+        return isbn; // Devuelve el ISBN del libro
     }
 
     public String getTitulo() {
-        return titulo;
+        return titulo; // Devuelve el título del libro
     }
 
     public String getAutor() {
-        return autor;
+        return autor; // Devuelve el autor del libro
     }
 
     public int getAnioPublicacion() {
-        return anioPublicacion;
+        return anioPublicacion; // Devuelve el año de publicación del libro
     }
 
     public boolean isDisponible() {
-        return disponible;
+        return disponible; // Devuelve el estado de disponibilidad del libro (si está disponible para
+                           // préstamo)
     }
 
     // Método "setter" para modificar el estado de disponibilidad del libro
     public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
+        this.disponible = disponible; // Modifica el estado de disponibilidad del libro
     }
 
     // Método que devuelve una representación legible del libro (útil para mostrar
     // en consola)
     @Override
     public String toString() {
+        // Retorna una cadena con la información del libro de forma legible
         return "ISBN: [" + isbn + "], Título: " + titulo + ", Autor: " + autor +
                 ", Año de Publicación: [" + anioPublicacion + "], Disponible: " + (disponible ? "Sí" : "No");
     }

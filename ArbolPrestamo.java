@@ -1,22 +1,22 @@
 // Clase que representa el Árbol de Búsqueda Binario (BST) para los préstamos
 public class ArbolPrestamo {
-    NodoPrestamo raiz;
+    NodoPrestamo raiz; // Nodo raíz del árbol de préstamos
 
-    // Constructor
+    // Constructor del árbol, inicializa la raíz como null
     public ArbolPrestamo() {
         raiz = null;
     }
 
     // Método para insertar un préstamo en el árbol
     public void insertar(Prestamo prestamo) {
-        raiz = insertarRec(raiz, prestamo);
+        raiz = insertarRec(raiz, prestamo); // Llama a la función recursiva para insertar
     }
 
     // Método recursivo para insertar un préstamo en el árbol
     private NodoPrestamo insertarRec(NodoPrestamo raiz, Prestamo prestamo) {
         // Si el árbol está vacío, colocamos el préstamo aquí
         if (raiz == null) {
-            raiz = new NodoPrestamo(prestamo);
+            raiz = new NodoPrestamo(prestamo); // Crear nuevo nodo con el préstamo
             return raiz;
         }
 
@@ -34,14 +34,15 @@ public class ArbolPrestamo {
         return raiz;
     }
 
+    // Método para obtener la raíz del árbol
     public NodoPrestamo getRaiz() {
         return raiz;
     }
 
-    // Método para buscar un préstamo por ID
+    // Método para buscar un préstamo por su ID
     public Prestamo buscar(int id) {
         NodoPrestamo resultado = buscarRec(raiz, id);
-        return (resultado != null) ? resultado.prestamo : null;
+        return (resultado != null) ? resultado.prestamo : null; // Retorna el préstamo si lo encuentra
     }
 
     // Método recursivo para buscar un préstamo por ID
@@ -61,9 +62,9 @@ public class ArbolPrestamo {
         return buscarRec(raiz.derecho, id);
     }
 
-    // Método para eliminar un préstamo por ID (o marcar como devuelto)
+    // Método para eliminar un préstamo por ID (o marcarlo como devuelto)
     public void eliminar(int id) {
-        raiz = eliminarRec(raiz, id);
+        raiz = eliminarRec(raiz, id); // Llama a la función recursiva para eliminar
     }
 
     // Método recursivo para eliminar un préstamo por ID
@@ -87,9 +88,9 @@ public class ArbolPrestamo {
         else {
             // Nodo con solo un hijo o sin hijos
             if (raiz.izquierdo == null) {
-                return raiz.derecho;
+                return raiz.derecho; // Retorna el hijo derecho si no tiene izquierdo
             } else if (raiz.derecho == null) {
-                return raiz.izquierdo;
+                return raiz.izquierdo; // Retorna el hijo izquierdo si no tiene derecho
             }
 
             // Nodo con dos hijos: Obtener el sucesor (el préstamo con el ID más pequeño en
@@ -105,6 +106,7 @@ public class ArbolPrestamo {
     // Método para obtener el préstamo con el ID más pequeño en el subárbol derecho
     private Prestamo obtenerMin(NodoPrestamo raiz) {
         Prestamo min = raiz.prestamo;
+        // Recorrer el subárbol izquierdo hasta encontrar el valor más pequeño
         while (raiz.izquierdo != null) {
             min = raiz.izquierdo.prestamo;
             raiz = raiz.izquierdo;
@@ -114,40 +116,45 @@ public class ArbolPrestamo {
 
     // Método para mostrar los préstamos del árbol en orden (inorder traversal)
     public void mostrarPrestamosInOrden() {
-        mostrarInOrdenRec(raiz);
+        mostrarInOrdenRec(raiz); // Llama a la función recursiva para mostrar en orden
     }
 
+    // Método recursivo para mostrar los préstamos en orden
     private void mostrarInOrdenRec(NodoPrestamo raiz) {
         if (raiz != null) {
-            mostrarInOrdenRec(raiz.izquierdo);
-            System.out.println(raiz.prestamo);
-            mostrarInOrdenRec(raiz.derecho);
+            mostrarInOrdenRec(raiz.izquierdo); // Muestra el subárbol izquierdo
+            System.out.println(raiz.prestamo); // Muestra el préstamo actual
+            mostrarInOrdenRec(raiz.derecho); // Muestra el subárbol derecho
         }
     }
 
+    // Método para verificar si el árbol está vacío
     public boolean estaVacio() {
-        return raiz == null;
+        return raiz == null; // Retorna true si la raíz es null, es decir, el árbol está vacío
     }
 
-    // Método para buscar por ISBN del libro
-
+    // Método para buscar un préstamo por el ISBN del libro
     public Prestamo buscarPorIsbn(String isbn) {
-        return buscarPorIsbnRec(raiz, isbn);
+        return buscarPorIsbnRec(raiz, isbn); // Llama a la función recursiva para buscar por ISBN
     }
 
+    // Método recursivo para buscar un préstamo por el ISBN del libro
     private Prestamo buscarPorIsbnRec(NodoPrestamo nodo, String isbn) {
         if (nodo == null)
-            return null;
+            return null; // Si el nodo es null, retornamos null
 
+        // Primero busca en el subárbol izquierdo
         Prestamo encontradoIzq = buscarPorIsbnRec(nodo.izquierdo, isbn);
         if (encontradoIzq != null)
-            return encontradoIzq;
+            return encontradoIzq; // Si lo encuentra en el subárbol izquierdo, lo retorna
 
+        // Si el ISBN coincide con el del nodo actual, lo retorna
         if (nodo.prestamo.libro.getIsbn().equals(isbn)) {
             return nodo.prestamo;
         }
 
+        // Si no se encuentra en el subárbol izquierdo ni en el nodo actual, lo busca en
+        // el subárbol derecho
         return buscarPorIsbnRec(nodo.derecho, isbn);
     }
-
 }

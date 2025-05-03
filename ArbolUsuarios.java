@@ -1,43 +1,44 @@
 // Clase que representa el Árbol de Búsqueda Binario (BST) para los usuarios
 public class ArbolUsuarios {
-    private NodoUsuario raiz;
+    private NodoUsuario raiz; // Nodo raíz del árbol de usuarios
 
-    // Constructor
+    // Constructor que inicializa el árbol vacío
     public ArbolUsuarios() {
         raiz = null;
     }
 
     // Método para insertar un usuario en el árbol
     public void insertar(Usuario usuario) {
-        raiz = insertarRec(raiz, usuario);
+        raiz = insertarRec(raiz, usuario); // Llama a la función recursiva para insertar el usuario
     }
 
     // Método recursivo para insertar un usuario en el árbol
     private NodoUsuario insertarRec(NodoUsuario raiz, Usuario usuario) {
         // Si el árbol está vacío, colocamos el usuario aquí
         if (raiz == null) {
-            raiz = new NodoUsuario(usuario);
+            raiz = new NodoUsuario(usuario); // Crear un nuevo nodo para el usuario
             return raiz;
         }
 
         // Si el ID del usuario es menor que el del nodo actual, va al subárbol
         // izquierdo
         if (usuario.id < raiz.usuario.id) {
-            raiz.izquierdo = insertarRec(raiz.izquierdo, usuario);
+            raiz.izquierdo = insertarRec(raiz.izquierdo, usuario); // Inserta en el subárbol izquierdo
         }
         // Si el ID del usuario es mayor que el del nodo actual, va al subárbol derecho
         else if (usuario.id > raiz.usuario.id) {
-            raiz.derecho = insertarRec(raiz.derecho, usuario);
+            raiz.derecho = insertarRec(raiz.derecho, usuario); // Inserta en el subárbol derecho
         }
 
-        // Retornamos el nodo sin cambios
+        // Retorna el nodo sin cambios (caso cuando el ID ya existe o no se inserta
+        // nada)
         return raiz;
     }
 
-    // Método para buscar un usuario por ID
+    // Método para buscar un usuario por su ID
     public Usuario buscar(int id) {
-        NodoUsuario resultado = buscarRec(raiz, id);
-        return (resultado != null) ? resultado.usuario : null;
+        NodoUsuario resultado = buscarRec(raiz, id); // Llama a la función recursiva para buscar
+        return (resultado != null) ? resultado.usuario : null; // Retorna el usuario si se encuentra
     }
 
     // Método recursivo para buscar un usuario por ID
@@ -57,9 +58,9 @@ public class ArbolUsuarios {
         return buscarRec(raiz.derecho, id);
     }
 
-    // Método para eliminar un usuario por ID
+    // Método para eliminar un usuario por su ID
     public void eliminar(int id) {
-        raiz = eliminarRec(raiz, id);
+        raiz = eliminarRec(raiz, id); // Llama a la función recursiva para eliminar el usuario
     }
 
     // Método recursivo para eliminar un usuario por ID
@@ -83,9 +84,9 @@ public class ArbolUsuarios {
         else {
             // Nodo con solo un hijo o sin hijos
             if (raiz.izquierdo == null) {
-                return raiz.derecho;
+                return raiz.derecho; // Retorna el hijo derecho si no tiene izquierdo
             } else if (raiz.derecho == null) {
-                return raiz.izquierdo;
+                return raiz.izquierdo; // Retorna el hijo izquierdo si no tiene derecho
             }
 
             // Nodo con dos hijos: Obtener el sucesor (el usuario con el ID más pequeño en
@@ -101,6 +102,7 @@ public class ArbolUsuarios {
     // Método para obtener el usuario con el ID más pequeño en el subárbol derecho
     private Usuario obtenerMin(NodoUsuario raiz) {
         Usuario min = raiz.usuario;
+        // Recorrer el subárbol izquierdo hasta encontrar el valor más pequeño
         while (raiz.izquierdo != null) {
             min = raiz.izquierdo.usuario;
             raiz = raiz.izquierdo;
@@ -110,19 +112,20 @@ public class ArbolUsuarios {
 
     // Método para mostrar los usuarios del árbol en orden (inorder traversal)
     public void mostrarUsuariosInOrden() {
-        mostrarInOrdenRec(raiz);
+        mostrarInOrdenRec(raiz); // Llama a la función recursiva para mostrar en orden
     }
 
+    // Método recursivo para mostrar los usuarios en orden
     private void mostrarInOrdenRec(NodoUsuario raiz) {
         if (raiz != null) {
-            mostrarInOrdenRec(raiz.izquierdo);
-            System.out.println(raiz.usuario);
-            mostrarInOrdenRec(raiz.derecho);
+            mostrarInOrdenRec(raiz.izquierdo); // Muestra el subárbol izquierdo
+            System.out.println(raiz.usuario); // Muestra el usuario actual
+            mostrarInOrdenRec(raiz.derecho); // Muestra el subárbol derecho
         }
     }
 
-    public boolean estaVacio(){
-        return raiz == null;
+    // Método para verificar si el árbol está vacío
+    public boolean estaVacio() {
+        return raiz == null; // Retorna true si la raíz es null, es decir, el árbol está vacío
     }
-
 }
