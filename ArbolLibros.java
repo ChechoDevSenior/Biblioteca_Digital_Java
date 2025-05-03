@@ -9,7 +9,10 @@ public class ArbolLibros {
 
     // Método público para insertar un libro en el árbol
     public void insertar(Libro libro) {
+        long inicio = System.nanoTime();
         raiz = insertarRec(raiz, libro); // Llama al método recursivo para insertar el libro
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de inserción: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para insertar un libro en el árbol
@@ -17,7 +20,6 @@ public class ArbolLibros {
         // Si el árbol está vacío, colocamos el libro aquí
         if (raiz == null) {
             raiz = new NodoLibro(libro); // Crea un nuevo nodo con el libro
-            return raiz; // Retorna el nodo creado
         }
 
         // Si el ISBN es menor que el del nodo actual, va al subárbol izquierdo
@@ -28,14 +30,16 @@ public class ArbolLibros {
         else if (libro.getIsbn().compareTo(raiz.libro.getIsbn()) > 0) {
             raiz.derecho = insertarRec(raiz.derecho, libro); // Recursión a la derecha
         }
-
         // Retorna el nodo sin cambios (si el ISBN ya está en el árbol no hace nada)
         return raiz;
     }
 
     // Método para buscar un libro por ISBN
     public Libro buscar(String isbn) {
+        long inicio = System.nanoTime();
         NodoLibro resultado = buscarRec(raiz, isbn); // Llama al método recursivo para buscar el libro
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
         return (resultado != null) ? resultado.libro : null; // Retorna el libro encontrado o null
     }
 
@@ -58,7 +62,10 @@ public class ArbolLibros {
 
     // Método para eliminar un libro por ISBN
     public void eliminar(String isbn) {
+        long inicio = System.nanoTime();
         raiz = eliminarRec(raiz, isbn); // Llama al método recursivo para eliminar el libro
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de eliminación: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para eliminar un libro por ISBN
