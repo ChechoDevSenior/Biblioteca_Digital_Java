@@ -9,7 +9,10 @@ public class ArbolPrestamo {
 
     // Método para insertar un préstamo en el árbol
     public void insertar(Prestamo prestamo) {
+        long inicio = System.nanoTime();
         raiz = insertarRec(raiz, prestamo); // Llama a la función recursiva para insertar
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para insertar un préstamo en el árbol
@@ -41,7 +44,10 @@ public class ArbolPrestamo {
 
     // Método para buscar un préstamo por su ID
     public Prestamo buscar(int id) {
+        long inicio = System.nanoTime();
         NodoPrestamo resultado = buscarRec(raiz, id);
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
         return (resultado != null) ? resultado.prestamo : null; // Retorna el préstamo si lo encuentra
     }
 
@@ -64,7 +70,10 @@ public class ArbolPrestamo {
 
     // Método para eliminar un préstamo por ID (o marcarlo como devuelto)
     public void eliminar(int id) {
+        long inicio = System.nanoTime();
         raiz = eliminarRec(raiz, id); // Llama a la función recursiva para eliminar
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para eliminar un préstamo por ID

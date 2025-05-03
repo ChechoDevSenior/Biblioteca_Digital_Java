@@ -9,7 +9,10 @@ public class ArbolUsuarios {
 
     // Método para insertar un usuario en el árbol
     public void insertar(Usuario usuario) {
+        long inicio = System.nanoTime();
         raiz = insertarRec(raiz, usuario); // Llama a la función recursiva para insertar el usuario
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de inserción: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para insertar un usuario en el árbol
@@ -37,7 +40,10 @@ public class ArbolUsuarios {
 
     // Método para buscar un usuario por su ID
     public Usuario buscar(int id) {
+        long inicio = System.nanoTime();
         NodoUsuario resultado = buscarRec(raiz, id); // Llama a la función recursiva para buscar
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
         return (resultado != null) ? resultado.usuario : null; // Retorna el usuario si se encuentra
     }
 
@@ -60,7 +66,10 @@ public class ArbolUsuarios {
 
     // Método para eliminar un usuario por su ID
     public void eliminar(int id) {
+        long inicio = System.nanoTime();
         raiz = eliminarRec(raiz, id); // Llama a la función recursiva para eliminar el usuario
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para eliminar un usuario por ID

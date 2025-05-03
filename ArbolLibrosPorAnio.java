@@ -9,7 +9,10 @@ public class ArbolLibrosPorAnio {
 
     // Método público para insertar un libro en el árbol
     public void insertar(Libro libro) {
+        long inicio = System.nanoTime();
         raiz = insertarRec(raiz, libro); // Llama al método recursivo para insertar el libro
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para insertar un libro en el árbol binario de búsqueda
@@ -30,7 +33,10 @@ public class ArbolLibrosPorAnio {
     // Método público para mostrar todos los libros en el árbol en orden ascendente
     // por año
     public void mostrarInOrden() {
+        long inicio = System.nanoTime();
         mostrarInOrdenRec(raiz); // Llama al método recursivo para mostrar los libros en orden
+        long fin = System.nanoTime();
+        System.out.println("Tiempo de búsqueda: " + (fin - inicio) + " ns");
     }
 
     // Método recursivo para mostrar los libros en orden inorden (izquierda, nodo,
